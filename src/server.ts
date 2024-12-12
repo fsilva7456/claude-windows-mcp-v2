@@ -3,7 +3,13 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 
 const app = express();
-const port = process.env.PORT || 3000;
+
+// Get port from command line args or environment variable
+const args = process.argv.slice(2);
+const portIndex = args.findIndex(arg => arg.startsWith('--port='));
+const port = portIndex >= 0 
+  ? parseInt(args[portIndex].split('=')[1]) 
+  : (process.env.PORT ? parseInt(process.env.PORT) : 3000);
 
 const execAsync = promisify(exec);
 
