@@ -1,10 +1,17 @@
 import * as http from 'http';
 import { WindowsCommandMCP } from './WindowsCommandMCP';
 
+interface CommandRequest {
+  type: 'execute' | 'cd';
+  command: string;
+}
+
 const PORT = process.env.PORT || 3000;
 const mcp = new WindowsCommandMCP();
 
 const server = http.createServer(async (req, res) => {
+  console.log(`Received ${req.method} request to ${req.url}`);
+
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -26,32 +33,36 @@ const server = http.createServer(async (req, res) => {
 
   try {
     // Parse request body
-    let body = '';
-    req.on('data', chunk => {
-      body += chunk.toString();
-    });
+    const chunks: Buffer[] = [];
+    for await (const chunk of req) {
+      chunks.push(chunk);
+    }
+    const data = Buffer.concat(chunks).toString();
+    console.log('Received data:', data);
 
-    await new Promise<void>((resolve) => {
-      req.on('end', () => {
-        resolve();
-      });
-    });
-
-    const { command, type } = JSON.parse(body);
+    const request = JSON.parse(data) as CommandRequest;
+    console.log('Parsed request:', request);
 
     let result;
-    switch (type) {
+    switch (request.type) {
       case 'execute':
-        result = await mcp.execute_command(command);
+        console.log('Executing command:', request.command);
+        result = await mcp.execute_command(request.command);
         break;
       case 'cd':
-        await mcp.change_directory(command);
-        result = { status: 0, stdout: `Changed directory to ${mcp.get_current_directory()}`, stderr: '' };
+        console.log('Changing directory to:', request.command);
+        await mcp.change_directory(request.command);
+        result = { 
+          status: 0, 
+          stdout: `Changed directory to ${mcp.get_current_directory()}`, 
+          stderr: '' 
+        };
         break;
       default:
-        throw new Error(`Unknown command type: ${type}`);
+        throw new Error(`Unknown command type: ${request.type}`);
     }
 
+    console.log('Command result:', result);
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(result));
 
