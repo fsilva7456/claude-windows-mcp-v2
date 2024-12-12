@@ -1,1 +1,50 @@
-IyBDbGF1ZGUgV2luZG93cyBDb21tYW5kIFByb21wdCBNQ1AKCkEgTW9kZWwgQ29udGV4dCBQcm90b2NvbCAoTUNQKSBpbXBsZW1lbnRhdGlvbiB0aGF0IGVuYWJsZXMgQ2xhdWRlIHRvIGludGVyYWN0IHdpdGggdGhlIFdpbmRvd3MgQ29tbWFuZCBQcm9tcHQuCgojIyBPdmVydmlldwoKVGhpcyBNQ1AgaW1wbGVtZW50YXRpb24gYWxsb3dzIENsYXVkZSB0byBleGVjdXRlIGNvbW1hbmRzIGluIHRoZSBXaW5kb3dzIENvbW1hbmQgUHJvbXB0IGFuZCByZWNlaXZlIHRoZWlyIG91dHB1dC4gSXQgaW5jbHVkZXMgc2FmZXR5IG1lYXN1cmVzIGFuZCB2YWxpZGF0aW9uIHRvIGVuc3VyZSBzZWN1cmUgY29tbWFuZCBleGVjdXRpb24uCgojIyBGZWF0dXJlcwoKLSBFeGVjdXRlIFdpbmRvd3MgQ29tbWFuZCBQcm9tcHQgY29tbWFuZHMKLSBSZWNlaXZlIGNvbW1hbmQgb3V0cHV0Ci0gQ29tbWFuZCB2YWxpZGF0aW9uIGFuZCBzYW5pdGl6YXRpb24KLSBFcnJvciBoYW5kbGluZwotIENvbmZpZ3VyYWJsZSBjb21tYW5kIHJlc3RyaWN0aW9ucwoKIyMgSW5zdGFsbGF0aW9uCgpgYGBiYXNoCnBpcCBpbnN0YWxsIC1yIHJlcXVpcmVtZW50cy50eHQKYGBgCgojIyBVc2FnZQoKYGBgcHl0aG9uCmZyb20gY21kX21jcCBpbXBvcnQgV2luZG93c0NvbW1hbmRNQ1AKCiMgSW5pdGlhbGl6ZSB0aGUgTUNQCm1jcCA9IFdpbmRvd3NDb21tYW5kTUNQKCkKCiMgRXhlY3V0ZSBhIGNvbW1hbmQKcmVzdWx0ID0gbWNwLmV4ZWN1dGVfY29tbWFuZCgnZGlyJykKcHJpbnQocmVzdWx0KQpgYGAKCiMjIFNlY3VyaXR5CgotIENvbW1hbmRzIGFyZSB2YWxpZGF0ZWQgYWdhaW5zdCBhIHdoaXRlbGlzdAotIFJlc3RyaWN0ZWQgY29tbWFuZHMgYW5kIGRpcmVjdG9yaWVzIGFyZSBibG9ja2VkCi0gT3V0cHV0IGlzIHNhbml0aXplZCBiZWZvcmUgcmV0dXJuCgojIyBUZXN0aW5nCgpgYGBiYXNoCnB5dGhvbiAtbSBweXRlc3QgdGVzdHMvCmBgYAoKIyMgTGljZW5zZQoKTUlUIExpY2Vuc2UK
+# Claude Windows Command Prompt MCP
+
+A Model Context Protocol (MCP) implementation that enables Claude to interact with the Windows Command Prompt.
+
+## Overview
+
+This MCP implementation allows Claude to execute commands in the Windows Command Prompt and receive their output. It includes safety measures and validation to ensure secure command execution.
+
+## Features
+
+- Execute Windows Command Prompt commands
+- Receive command output
+- Command validation and sanitization
+- Error handling
+- Configurable command restrictions
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+```python
+from cmd_mcp import WindowsCommandMCP
+
+# Initialize the MCP
+mcp = WindowsCommandMCP()
+
+# Execute a command
+result = mcp.execute_command('dir')
+print(result)
+```
+
+## Security
+
+- Commands are validated against a whitelist
+- Restricted commands and directories are blocked
+- Output is sanitized before return
+
+## Testing
+
+```bash
+python -m pytest tests/
+```
+
+## License
+
+MIT License
