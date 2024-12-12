@@ -71,9 +71,9 @@ export class WindowsCommandMCP {
     if (!output) return '';
 
     const patterns = [
-      /(?i)password[s]?[=:].+/g,
-      /(?i)secret[s]?[=:].+/g,
-      /(?i)token[s]?[=:].+/g
+      /password[s]?[=:].+/i,
+      /secret[s]?[=:].+/i,
+      /token[s]?[=:].+/i
     ];
 
     let sanitized = output;
